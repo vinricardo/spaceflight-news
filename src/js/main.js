@@ -2,11 +2,13 @@
     
 const api = `https://api.spaceflightnewsapi.net/v3`
 const endpoints =  {
-    articles: () => `${api}/articles`
+    articles: () => `${api}/articles`,
+    reports: () => `${api}/reports`
 }
 
 
 const articles$ = fetch(endpoints.articles()).then(res => res.json())
+const reports$ = fetch(endpoints.reports()).then(res=> res.json())
 
 function getArticles() {
     articles$.then(res => {
@@ -24,6 +26,15 @@ function getArticles() {
         setImage('#third-article-img', res[2].imageUrl)
         setImage('#fourth-article-img', res[3].imageUrl)
         setImage('#fifth-article-img', res[4].imageUrl)
+    })
+}
+
+function getReports(){
+    reports$.then(res => {
+        let subtitleReport = document.querySelector('#seventh-article-subtitle');
+        let dateReport =  document.querySelector('#publish-date-report');
+        subtitleReport.innerHTML =  res[0].summary;
+        dateReport.innerHTML = new Date(res[0].publishedAt).toLocaleDateString();
     })
 }
 
@@ -47,4 +58,5 @@ function setImage(id,imageUrl){
 }
 
 getArticles();
+getReports();
 }
